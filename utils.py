@@ -36,7 +36,7 @@ def generate_spaced_points(n_points, map_size):
         
         attempts += 1
     
-    # If we couldn't generate enough points, fill the rest randomly
+    # If not enough points, fill the rest randomly
     while len(points) < n_points:
         points.append(np.random.rand(2) * map_size)
     
