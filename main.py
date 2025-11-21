@@ -17,17 +17,56 @@ def main():
     # User inputs
     print("\nMap Size Options:")
     print("1. Small (200x200)")
-    print("2. Large (800x800)")
+    print("2. Large (1000x1000)")
     map_choice = input("Choose map size (1 or 2, default=1): ").strip() or "1"
     
     if map_choice == "2":
-        map_size = 800
-        n_predators = 8
-        n_food = 8
+        map_size = 1000
+        n_predators = 4
+        n_food = 4
     else:
         map_size = 200
         n_predators = 4
         n_food = 4
+    
+    # Placement mode selection
+    print("\nPlacement Mode:")
+    print("1. Randomized (generated with spacing)")
+    print("2. Fixed positions")
+    placement_choice = input("Choose placement mode (1 or 2, default=1): ").strip() or "1"
+    
+    # Define fixed positions if selected
+    fixed_predators = None
+    fixed_food = None
+    
+    if placement_choice == "2":
+        if map_size == 1000:
+            # Fixed positions for 1000x1000 map
+            fixed_predators = np.array([
+                [299, 899],      # Top-left area
+                [100, 349],     # Middle area
+                [149, 103],     # Bottom-left area
+                [500, 402]       # Top-right area
+            ])
+            fixed_food = np.array([
+                [201, 799],     # Left side
+                [802, 797],     # Top-right
+                [203, 202],     # Bottom-left
+                [801, 203]      # Bottom-right
+            ])
+        else:  # 200x200 map (scale down by factor of 5)
+            fixed_predators = np.array([
+                [59.8, 179.8],       # Top-left area
+                [20, 69.8],      # Middle area
+                [29.8, 20.6],      # Bottom-left area
+                [100, 80.4]        # Top-right area
+            ])
+            fixed_food = np.array([
+                [40.2, 159.8],       # Left side
+                [160.4, 159.4],      # Top-right
+                [40.6, 40.4],      # Bottom-left
+                [160.2, 40.6]      # Bottom-right
+            ])
     
     n_particles = input(f"\nNumber of birds/particles (default=20): ").strip()
     n_particles = int(n_particles) if n_particles else 20
@@ -38,6 +77,7 @@ def main():
     print(f"\n{'='*60}")
     print(f"Configuration:")
     print(f"  Map Size: {map_size}x{map_size}")
+    print(f"  Placement: {'Fixed' if placement_choice == '2' else 'Randomized'}")
     print(f"  Particles: {n_particles}")
     print(f"  Predators: {n_predators}")
     print(f"  Food Sources: {n_food}")
@@ -47,7 +87,8 @@ def main():
     # Initialize PSO
     print("Initializing PSO...")
     pso = BirdNestPSO(map_size=map_size, n_particles=n_particles, 
-                      n_predators=n_predators, n_food=n_food)
+                      n_predators=n_predators, n_food=n_food,
+                      fixed_predators=fixed_predators, fixed_food=fixed_food)
     
     print(f"Initial best fitness: {pso.global_best_fitness:.2f}")
     
