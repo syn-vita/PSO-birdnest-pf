@@ -4,7 +4,7 @@ A Python implementation of Particle Swarm Optimization (PSO) algorithm that simu
 
 ## Overview
 
-This project demonstrates PSO through an analogy where a swarm of birds collectively searches for the best nesting location. The optimal location maximizes distance from predators while minimizing distance to food sources.
+This project demonstrates PSO through an analogy where a swarm of birds collectively searches for the best nesting location. The optimal location maximizes distance from all predators while minimizing distance to all food sources.
 
 ## Features
 
@@ -175,16 +175,6 @@ def _fitness(self, position):
     return fitness_value
 ```
 
-## Applications
-
-This PSO implementation can be adapted for:
-
-- **Optimization Problems**: Function minimization/maximization
-- **Path Planning**: Robot navigation with obstacles
-- **Resource Allocation**: Facility location problems
-- **Machine Learning**: Hyperparameter tuning
-- **Engineering Design**: Multi-objective optimization
-
 ## Educational Value
 
 This project demonstrates:
@@ -201,16 +191,6 @@ This project demonstrates:
 - Performance depends on parameter tuning
 - Best for continuous optimization problems
 - Requires fitness function evaluation at each particle position
-
-## Future Enhancements
-
-- [ ] Add different PSO variants (Adaptive PSO, Quantum PSO)
-- [ ] Implement constraint handling
-- [ ] Multi-objective optimization support
-- [ ] Save/load configuration and results
-- [ ] Export animations as video files
-- [ ] Parameter auto-tuning
-- [ ] 3D visualization option
 
 ## License
 
