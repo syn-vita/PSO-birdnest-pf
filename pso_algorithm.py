@@ -64,7 +64,7 @@ class BirdNestPSO:
         self.history = []
         
         # Convergence tracking (Make threshold smaller (0.01) and iterations larger (5) for slower convergence stop)
-        self.convergence_threshold = 0.1  # Stop if average movement < this
+        self.convergence_threshold = 0.2  # Stop if average movement < this
         self.convergence_iterations = 3   # Must be stable for this many iterations
         self.movement_history = []
     
