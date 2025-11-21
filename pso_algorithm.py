@@ -13,7 +13,8 @@ class BirdNestPSO:
     Balances distance from predators and proximity to food sources
     """
     
-    def __init__(self, map_size=200, n_particles=20, n_predators=4, n_food=4):
+    def __init__(self, map_size=200, n_particles=20, n_predators=4, n_food=4, 
+                 fixed_predators=None, fixed_food=None):
         """
         Initialize PSO with map and particle parameters
         
@@ -22,6 +23,8 @@ class BirdNestPSO:
             n_particles: Number of particles (birds) in swarm
             n_predators: Number of predator locations
             n_food: Number of food source locations
+            fixed_predators: Optional numpy array of fixed predator positions
+            fixed_food: Optional numpy array of fixed food positions
         """
         self.map_size = map_size
         self.n_particles = n_particles
@@ -33,9 +36,16 @@ class BirdNestPSO:
         self.c1 = 1.5  # cognitive (personal best) weight
         self.c2 = 1.5  # social (global best) weight
         
-        # Initialize predators and food sources with good spacing
-        self.predators = generate_spaced_points(n_predators, map_size)
-        self.food_sources = generate_spaced_points(n_food, map_size)
+        # Initialize predators and food sources
+        if fixed_predators is not None:
+            self.predators = fixed_predators
+        else:
+            self.predators = generate_spaced_points(n_predators, map_size)
+        
+        if fixed_food is not None:
+            self.food_sources = fixed_food
+        else:
+            self.food_sources = generate_spaced_points(n_food, map_size)
         
         # Initialize particles randomly
         self.particles = np.random.rand(n_particles, 2) * map_size
