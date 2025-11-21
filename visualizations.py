@@ -38,10 +38,9 @@ def visualize_pso(pso, n_iterations=50, interval=100, computation_time=None, int
     ax.legend(loc='upper right')
     ax.grid(True, alpha=0.3)
     
-    # Text for iteration and fitness
-    text = ax.text(0.02, 0.98, '', transform=ax.transAxes, 
-                   verticalalignment='top', fontsize=11,
-                   bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+    # Text for iteration and fitness - placed below the plot
+    text = fig.text(0.5, 0.02, '', ha='center', fontsize=11,
+                    bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.9))
     
     def init():
         particles_scatter.set_offsets(np.empty((0, 2)))
@@ -82,13 +81,13 @@ def visualize_pso(pso, n_iterations=50, interval=100, computation_time=None, int
         
         # Update text with computation time if available
         if computation_time is not None:
-            text.set_text(f'Iteration: {iteration}\n'
-                          f'Best Fitness: {global_best_fitness:.2f}\n'
-                          f'Best Position: ({global_best[0]:.1f}, {global_best[1]:.1f})\n'
+            text.set_text(f'Iteration: {iteration}  |  '
+                          f'Best Fitness: {global_best_fitness:.2f}  |  '
+                          f'Best Position: ({global_best[0]:.1f}, {global_best[1]:.1f})  |  '
                           f'Computation Time: {computation_time:.3f}s')
         else:
-            text.set_text(f'Iteration: {iteration}\n'
-                          f'Best Fitness: {global_best_fitness:.2f}\n'
+            text.set_text(f'Iteration: {iteration}  |  '
+                          f'Best Fitness: {global_best_fitness:.2f}  |  '
                           f'Best Position: ({global_best[0]:.1f}, {global_best[1]:.1f})')
         
         return particles_scatter, global_best_scatter, text
@@ -157,19 +156,18 @@ def visualize_exhaustive_search_display(pso, X, Y, fitness_map, best_position, b
     else:
         fitness_accuracy = 100.0
     
-    # Add text with statistics
-    stats_text = (f'Exhaustive Search Evaluations: {resolution**2}\n'
-                  f'PSO Fitness: {pso.global_best_fitness:.2f}\n'
-                  f'Optimal Fitness: {best_fitness:.2f}\n'
-                  f'Position Distance: {position_distance:.2f}\n'
-                  f'Position Accuracy: {position_accuracy:.1f}%\n'
+    # Add text with statistics - placed below the plot
+    stats_text = (f'Exhaustive Search Evaluations: {resolution**2}  |  '
+                  f'PSO Fitness: {pso.global_best_fitness:.2f}  |  '
+                  f'Optimal Fitness: {best_fitness:.2f}  |  '
+                  f'Position Distance: {position_distance:.2f}  |  '
+                  f'Position Accuracy: {position_accuracy:.1f}%  |  '
                   f'Fitness Quality: {fitness_accuracy:.1f}%')
     
-    ax.text(0.02, 0.02, stats_text, transform=ax.transAxes,
-            verticalalignment='bottom', fontsize=10,
-            bbox=dict(boxstyle='round', facecolor='white', alpha=0.9))
+    fig.text(0.5, 0.02, stats_text, ha='center', fontsize=10,
+             bbox=dict(boxstyle='round', facecolor='white', alpha=0.9))
     
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.04, 1, 1])  # Leave space at bottom for text
     plt.show()
 
 
