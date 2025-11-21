@@ -8,9 +8,8 @@ This project demonstrates PSO through an analogy where a swarm of birds collecti
 
 ## Features
 
-- **Interactive PSO Animation**: Real-time visualization of particle movement and convergence
+- **PSO Visualization**: Real-time visualization of particle movement and convergence
 - **Exhaustive Search Comparison**: Compare PSO efficiency against brute-force search
-- **Early Convergence Detection**: Automatically stops when solution stabilizes
 - **Customizable Parameters**: Adjust map size, particle count, and iterations
 - **Fitness Landscape Visualization**: Heatmap showing the complete solution space
 - **Performance Metrics**: Detailed comparison of computation time, evaluations, and accuracy
@@ -32,7 +31,7 @@ pip install numpy matplotlib
 Run the main script:
 
 ```bash
-python PSO_c.py
+python main.py
 ```
 
 ### Interactive Configuration
@@ -90,11 +89,11 @@ Where:
 
 ### 1. PSO Animation
 
-- **Blue dots**: Individual birds (particles)
-- **Blue arrows**: Velocity vectors showing movement direction
-- **Yellow star**: Current best nest location
+- **Blue dots**: Individual birds (particles) with smooth interpolated movement
+- **Yellow star**: Current best nest location (50% transparent)
 - **Red X**: Predators to avoid
 - **Green squares**: Food sources
+- Animation uses 8-step interpolation for fluid motion
 
 ### 2. Fitness Landscape
 
@@ -124,33 +123,47 @@ Typical results on a 200×200 map:
 
 The algorithm includes early stopping when:
 
-- Average particle movement < 0.01 (threshold)
-- Condition maintained for 5 consecutive iterations
+- Average particle movement < 0.1 (threshold)
+- Condition maintained for 3 consecutive iterations
 
-This prevents unnecessary computation once the swarm has converged.
+This prevents unnecessary computation once the swarm has converged. The convergence parameters can be adjusted in `pso_algorithm.py`:
+
+- Decrease threshold to 0.01 for tighter convergence (more iterations)
+- Increase iterations to 5 for more stable stopping criteria
 
 ## Code Structure
 
+The project is modularized into four main files for clarity and maintainability:
+
 ```
-PSO_c.py
+main.py                    # Entry point and user interface
+├── User input handling
+├── PSO initialization and execution
+├── Performance timing and metrics
+└── Visualization orchestration
+
+pso_algorithm.py          # Core PSO implementation
 ├── BirdNestPSO Class
 │   ├── __init__()           # Initialize parameters and positions
-│   ├── _generate_spaced_points()  # Smart placement of predators/food
 │   ├── _fitness()           # Evaluate nest location quality
 │   ├── update()             # PSO velocity and position updates
-│   ├── exhaustive_search()  # Brute-force optimal solution
-│   └── run()                # Main optimization loop
-├── visualize_pso()          # Animate PSO process
-├── visualize_exhaustive_search()  # Show fitness landscape
-├── visualize_comparison()   # Display performance metrics
-└── main()                   # User interface and workflow
+│   ├── run()                # Main optimization loop with early stopping
+│   └── exhaustive_search()  # Brute-force optimal solution
+
+visualizations.py         # All plotting and animation functions
+├── visualize_pso()          # Animate PSO process with interpolation
+├── visualize_exhaustive_search()  # Show fitness landscape heatmap
+└── visualize_comparison()   # Display performance metrics
+
+utils.py                  # Helper utilities
+└── generate_spaced_points() # Smart placement algorithm for predators/food
 ```
 
 ## Customization
 
 ### Adjust PSO Parameters
 
-Modify the `BirdNestPSO.__init__()` method:
+Modify `pso_algorithm.py` in the `BirdNestPSO.__init__()` method:
 
 ```python
 self.w = 0.5   # Inertia: higher = more exploration
@@ -160,20 +173,41 @@ self.c2 = 1.5  # Social: higher = stronger swarm effect
 
 ### Change Convergence Criteria
 
+In `pso_algorithm.py`:
+
 ```python
-self.convergence_threshold = 0.01  # Movement threshold
-self.convergence_iterations = 5     # Stability duration
+self.convergence_threshold = 0.1  # Movement threshold (lower = tighter convergence)
+self.convergence_iterations = 3   # Stability duration (higher = more stable)
+```
+
+### Adjust Animation Speed
+
+In `main.py`, modify the `visualize_pso()` call:
+
+```python
+visualize_pso(pso, n_iterations=actual_iterations, interval=400)  # Higher = slower
 ```
 
 ### Modify Fitness Function
 
-Edit the `_fitness()` method to implement different objectives:
+Edit the `_fitness()` method in `pso_algorithm.py` to implement different objectives:
 
 ```python
 def _fitness(self, position):
-    # Your custom fitness calculation
+    # Current implementation uses minimax approach:
+    # Maximize distance to nearest predator
+    # Minimize distance to furthest food
+    # Your custom fitness calculation here
     return fitness_value
 ```
+
+## Applications
+
+This PSO implementation can be adapted for:
+
+- **Optimization Problems**: Function minimization/maximization
+- **Resource Allocation**: Facility location problems
+- **Machine Learning**: Hyperparameter tuning
 
 ## Educational Value
 
