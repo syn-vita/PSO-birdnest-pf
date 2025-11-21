@@ -105,16 +105,8 @@ def visualize_pso(pso, n_iterations=50, interval=100, computation_time=None, int
     return anim
 
 
-def visualize_exhaustive_search(pso, resolution=100):
-    """Visualize exhaustive search results"""
-    print(f"\nPerforming exhaustive search with {resolution}x{resolution} = {resolution**2} evaluations...")
-    
-    X, Y, fitness_map = pso.exhaustive_search(resolution)
-    
-    # Find best position from exhaustive search
-    best_idx = np.unravel_index(np.argmax(fitness_map), fitness_map.shape)
-    best_position = np.array([X[best_idx], Y[best_idx]])
-    best_fitness = fitness_map[best_idx]
+def visualize_exhaustive_search_display(pso, X, Y, fitness_map, best_position, best_fitness, resolution):
+    """Visualize exhaustive search results (display only, computation already done)"""
     
     fig, ax = plt.subplots(figsize=(12, 10))
     
@@ -179,6 +171,24 @@ def visualize_exhaustive_search(pso, resolution=100):
     
     plt.tight_layout()
     plt.show()
+
+
+def visualize_exhaustive_search(pso, resolution=100):
+    """
+    DEPRECATED: Use separate computation and visualization instead.
+    This function combines both and includes visualization time in the computation timer.
+    Kept for backward compatibility.
+    """
+    print(f"\nPerforming exhaustive search with {resolution}x{resolution} = {resolution**2} evaluations...")
+    
+    X, Y, fitness_map = pso.exhaustive_search(resolution)
+    
+    # Find best position from exhaustive search
+    best_idx = np.unravel_index(np.argmax(fitness_map), fitness_map.shape)
+    best_position = np.array([X[best_idx], Y[best_idx]])
+    best_fitness = fitness_map[best_idx]
+    
+    visualize_exhaustive_search_display(pso, X, Y, fitness_map, best_position, best_fitness, resolution)
     
     return best_position, best_fitness
 
