@@ -401,9 +401,9 @@ def visualize_comparison(pso_time, ex_time, pso_evaluations, resolution, positio
             ha='center', va='top', fontsize=14, fontweight='bold', color=accuracy_color)
     
     # Summary box
-    summary_text = "Summary: PSO efficiently found a near-optimal solution with significantly fewer evaluations"
-    ax.text(0.5, 0.05, summary_text, ha='center', va='top', fontsize=12, 
-            style='italic', bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8))
+    # summary_text = "Summary: PSO efficiently found a near-optimal solution with significantly fewer evaluations"
+    # ax.text(0.5, 0.05, summary_text, ha='center', va='top', fontsize=12, 
+    #        style='italic', bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8))
     
     plt.tight_layout()
     plt.show()
@@ -500,4 +500,5 @@ def main():
                         position_distance, position_accuracy, actual_iterations, n_iterations)
 
 if __name__ == "__main__":
+
     main()
