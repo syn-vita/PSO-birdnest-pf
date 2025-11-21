@@ -68,11 +68,11 @@ def main():
                 [160.2, 40.6]      # Bottom-right
             ])
     
-    n_particles = input(f"\nNumber of birds/particles (default=20): ").strip()
-    n_particles = int(n_particles) if n_particles else 20
+    n_particles = input(f"\nNumber of birds/particles (default=9): ").strip()
+    n_particles = int(n_particles) if n_particles else 9
     
-    n_iterations = input("Number of iterations (default=50): ").strip()
-    n_iterations = int(n_iterations) if n_iterations else 50
+    n_iterations = input("Number of iterations (default=40): ").strip()
+    n_iterations = int(n_iterations) if n_iterations else 40
     
     print(f"\n{'='*60}")
     print(f"Configuration:")
@@ -113,9 +113,21 @@ def main():
     
     # Exhaustive search for comparison
     resolution = 100 if map_size == 200 else 150
+    print(f"\nPerforming exhaustive search with {resolution}x{resolution} = {resolution**2} evaluations...")
     ex_start = time.time()
-    best_pos, best_fit = visualize_exhaustive_search(pso, resolution=resolution)
+    X, Y, fitness_map = pso.exhaustive_search(resolution)
     ex_time = time.time() - ex_start
+    
+    # Find best position from exhaustive search
+    best_idx = np.unravel_index(np.argmax(fitness_map), fitness_map.shape)
+    best_pos = np.array([X[best_idx], Y[best_idx]])
+    best_fit = fitness_map[best_idx]
+    
+    # Now visualize (this is separate from timing)
+    print(f"Exhaustive search computation completed in {ex_time:.3f}s")
+    print("\nDisplaying exhaustive search visualization...")
+    from visualizations import visualize_exhaustive_search_display
+    visualize_exhaustive_search_display(pso, X, Y, fitness_map, best_pos, best_fit, resolution)
     
     print(f"\nExhaustive Search Best Position: ({best_pos[0]:.2f}, {best_pos[1]:.2f})")
     print(f"Exhaustive Search Best Fitness: {best_fit:.2f}")
